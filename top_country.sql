@@ -3,8 +3,17 @@
 
 SELECT  TotalSales, BillingCountry
 from (
-SELECT sum(Total) TotalSales, BillingCountry from Invoice GROUP BY BillingCountry ) as t
+SELECT sum(Total) TotalSales, BillingCountry
+from Invoice
+GROUP BY BillingCountry ) as t
 WHERE TotalSales = (
 SELECT max(TotalSales) from (
     SELECT sum(Total) TotalSales from Invoice GROUP BY BillingCountry
 ) as s);
+
+-- other way
+
+SELECT top 1 sum(Total) TotalSales, BillingCountry
+from Invoice
+GROUP BY BillingCountry
+order by TotalSales desc
